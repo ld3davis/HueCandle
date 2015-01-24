@@ -7,7 +7,7 @@ import os
 
 # config.txt is expected to have the URL of your Hue base as well as the target light:
 # example: http://YOURHUEBASEIP/api/YOURAPPLICATIONKEY/lights/3/state (this will target light #3)
-# This will be expanded in the future.
+# This will be expanded in the future to allow for more variables and settings.
 def getUrl():
 	f = open('config.txt', 'r')
 	url = f.read().rstrip()
