@@ -16,6 +16,8 @@ def getUrl():
 def hueCandle(randomizeBrightness):
 	print("Not implemented!")
 
+# Cycle light(s) with random colors every n seconds where n is a random number between 1 and 5
+# If randomizeBrightness parameter is True, also randomize the brightness of the light(s) from 1 to 255
 def randomColors(randomizeBrightness):
 	url = getUrl()
 	print url	
@@ -37,6 +39,7 @@ def randomColors(randomizeBrightness):
 	f = requests.put(url, data=data)
 	print(f.content)
 
+# Prints the main menu
 def printMenu():
 	print("==============================================")
 	print("=Hue Candle                                  =")
