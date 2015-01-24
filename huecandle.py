@@ -14,13 +14,33 @@ def getUrl():
 	return url
 
 def hueCandle(randomizeBrightness):
-	print("Not implemented!")
+	url = getUrl()
+
+	colorList = [12750,0]
+	while True:
+		try:
+			bright = 255
+			if (randomizeBrightness):
+				bright = random.randint(1, 255)
+			colorListIndex = random.randint(0, len(colorList) - 1)
+			hue = colorList[colorListIndex]
+			sleep = random.randint(1, 5) * 0.1
+			data = json.dumps({"on":True, "bri":bright, "sat":255, "hue":hue})
+			f = requests.put(url, data=data)
+			print(f.content)
+			time.sleep(sleep)
+		except KeyboardInterrupt:
+			break;
+
+	data = json.dumps({"on":False})
+	f = requests.put(url, data=data)
+	print(f.content)
 
 # Cycle light(s) with random colors every n seconds where n is a random number between 1 and 5
 # If randomizeBrightness parameter is True, also randomize the brightness of the light(s) from 1 to 255
 def randomColors(randomizeBrightness):
 	url = getUrl()
-	print url	
+
 	while True:
 		try:
 			bright = 255
