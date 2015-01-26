@@ -1,3 +1,4 @@
 Use tuples instead of lists where appropriate.
 Use if...elif...else in event loop (thanks Chris).
 Add user selection of specific lights or groups.
+test 2
