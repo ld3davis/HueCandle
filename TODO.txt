@@ -1,0 +1,2 @@
+Use tuples instead of lists where appropriate.
+Use if...elif...else in event loop (thanks Chris).
