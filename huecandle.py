@@ -3,7 +3,7 @@ import requests
 import time
 import random
 import os
-
+import platform
 
 # config.txt is expected to have the URL of your Hue base as well as the target light:
 # example: http://YOURHUEBASEIP/api/YOURAPPLICATIONKEY/lights/3/state (this will target light #3)
@@ -59,6 +59,13 @@ def randomColors(randomizeBrightness):
    f = requests.put(url, data=data)
    print(f.content)
 
+# Clears the terminal
+def clearTerminal():
+   if 'win' in platform.platform().lower():
+      os.system("cls")
+   else:
+      os.system("clear")
+
 # Prints the main menu
 def printMenu():
    print("==============================================")
@@ -76,7 +83,7 @@ def main():
    userInput = 0
 
    while (userInput == 0):
-      os.system("clear")
+      clearTerminal()
       printMenu()
       try:
          userInput = int(input("Selection: "))
