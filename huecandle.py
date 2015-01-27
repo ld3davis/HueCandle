@@ -89,13 +89,13 @@ def main():
       if (userInput == 1):
          hueCandle(False)
          userInput = 0
-      if (userInput == 2):
+      elif (userInput == 2):
          hueCandle(True)
          userInput = 0
-      if (userInput == 3):
+      elif (userInput == 3):
          randomColors(False)
          userInput = 0
-      if (userInput == 4):
+      elif (userInput == 4):
          randomColors(True)
          userInput = 0
       else: 
