@@ -5,13 +5,17 @@ import random
 import os
 import platform
 
-# config.txt is expected to have the URL of your Hue base as well as the target light:
-# example: http://YOURHUEBASEIP/api/YOURAPPLICATIONKEY/lights/3/state (this will target light #3)
+# Change this to the ID of the light you would like to control.
+# For now only one light can be controlled. 
+selectedLight = 3
+
+# config.txt is expected to have the URL of your Hue base including your application key:
+# example: http://YOURHUEBASEIP/api/YOURAPPLICATIONKEY
 # This will be expanded in the future to allow for more variables and settings.
 def getUrl():
    f = open('config.txt', 'r')
    url = f.read().rstrip()
-   return url
+   return "{}/lights/{}/state".format(url,selectedLight)
 
 def hueCandle(randomizeBrightness):
    url = getUrl()
