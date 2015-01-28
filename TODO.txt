@@ -1,3 +1,5 @@
 Use tuples instead of lists where appropriate. DONE
 Use if...elif...else in event loop (thanks Chris). DONE
-Add user selection of specific lights or groups.
+Add user selection of specific light by id or name.
+Add user selection of specific group.
+Build curses interface?
