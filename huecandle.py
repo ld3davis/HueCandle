@@ -9,8 +9,11 @@ import platform
 # For now only one light can be controlled. 
 selectedLight = 3
 
-# config.txt is expected to have the URL of your Hue base including your application key:
-# example: http://YOURHUEBASEIP/api/YOURAPPLICATIONKEY
+# prints responses from Hue bridge if set to True
+verbose = True
+
+# config.txt is expected to have the URL of your Hue bridge including your application key:
+# example: http://YOURHUEBRIDGEIP/api/YOURAPPLICATIONKEY
 # This will be expanded in the future to allow for more variables and settings.
 def getUrl():
    f = open('config.txt', 'r')
@@ -19,8 +22,9 @@ def getUrl():
 
 def hueCandle(randomizeBrightness):
    url = getUrl()
-
    colorList = (12750,0)
+   on = False
+
    while True:
       try:
          bright = 255
@@ -29,21 +33,28 @@ def hueCandle(randomizeBrightness):
          colorListIndex = random.randint(0, len(colorList) - 1)
          hue = colorList[colorListIndex]
          sleep = random.randint(1, 5) * 0.1
-         data = json.dumps({"on":True, "bri":bright, "sat":255, "hue":hue})
+         if (not on):
+            data = json.dumps({"on":True, "bri":bright, "sat":255, "hue":hue})
+            on = True
+         else:
+            data = json.dumps({"bri":bright, "hue":hue})
          f = requests.put(url, data=data)
-         print(f.content)
+         if (verbose):
+            print(f.content)
          time.sleep(sleep)
       except KeyboardInterrupt:
          break;
 
    data = json.dumps({"on":False})
    f = requests.put(url, data=data)
-   print(f.content)
+   if (verbose):
+      print(f.content)
 
 # Cycle light(s) with random colors every n seconds where n is a random number between 1 and 5
 # If randomizeBrightness parameter is True, also randomize the brightness of the light(s) from 1 to 255
 def randomColors(randomizeBrightness):
    url = getUrl()
+   on = False
 
    while True:
       try:
@@ -52,16 +63,22 @@ def randomColors(randomizeBrightness):
             bright = random.randint(1, 255)
          hue = random.randint(0, 65280)
          sleep = random.randint(1, 5)
-         data = json.dumps({"on":True, "bri":bright, "sat":255, "hue":hue})
+         if (not on):
+            data = json.dumps({"on":True, "bri":bright, "sat":255, "hue":hue})
+            on = True
+         else:
+            data = json.dumps({"bri":bright, "hue":hue})
          f = requests.put(url, data=data)
-         print(f.content)
+         if (verbose):
+            print(f.content)
          time.sleep(sleep)
       except KeyboardInterrupt:
          break
 
    data = json.dumps({"on":False})
    f = requests.put(url, data=data)
-   print(f.content)
+   if (verbose):
+      print(f.content)
 
 # Clears the terminal
 def clearTerminal():
@@ -73,18 +90,20 @@ def clearTerminal():
 # Prints the main menu
 def printMenu():
    print("==============================================")
-   print("=Hue Candle                                  =")
-   print("=                                            =")
-   print("=Select an action:                           =")
-   print("=1) Candle Simulation                        =")
-   print("=2) Candle Simluation (random brightness)    =")
-   print("=3) Random Colors                            =")
-   print("=4) Random Colors (random brightness)        =")
-   print("=9) Exit                                     =")
+   print("=Hue Candle                                   ")
+   print("=                                             ")
+   print("=Select an action:                            ")
+   print("=1) Candle Simulation                         ")
+   print("=2) Candle Simluation (random brightness)     ")
+   print("=3) Random Colors                             ")
+   print("=4) Random Colors (random brightness)         ")
+   print("=5) Toggle Verbose mode (current: {})         ").format(verbose)
+   print("=9) Exit                                      ")
    print("==============================================")
 
 def main():
    userInput = 0
+   global verbose
 
    while (userInput == 0):
       clearTerminal()
@@ -108,6 +127,9 @@ def main():
          userInput = 0
       elif (userInput == 4):
          randomColors(True)
+         userInput = 0
+      elif (userInput == 5):
+         verbose = not verbose
          userInput = 0
       else: 
          if (userInput == 9):
