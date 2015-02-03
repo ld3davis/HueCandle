@@ -103,14 +103,17 @@ def printMenu():
    print("==============================================")
 
 # Checks for the existence of a preferences file
-# If no file exists, initializePreferences is called to create a base preferences file.
+# If no file exists, initializePreferences is called to create a base preferences file
+# Finally, preferences file is loaded into global variables
 def checkPreferences():
    if os.path.isfile(".hueCandlePrefs"):
       print("Preferences file found!")
    else:
       print("No preference file found! Initializing...")
       initializePreferences()
+   loadPreferences()
 
+def loadPreferences():
    global selectedLights
    with open(".hueCandlePrefs", "rb") as fileHandle:
       preferencesDictionary = pickle.load(fileHandle)
