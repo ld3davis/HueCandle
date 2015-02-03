@@ -4,10 +4,11 @@ import time
 import random
 import os
 import platform
+import pickle
 
 # Change this to the ID of the light you would like to control.
 # For now only one light can be controlled. 
-selectedLight = 3
+selectedLights = 0
 
 # prints responses from Hue bridge if set to True
 verbose = True
@@ -18,7 +19,7 @@ verbose = True
 def getUrl():
    f = open('config.txt', 'r')
    url = f.read().rstrip()
-   return "{}/lights/{}/state".format(url,selectedLight)
+   return "{}/lights/{}/state".format(url,selectedLights[0])
 
 def hueCandle(randomizeBrightness):
    url = getUrl()
@@ -101,7 +102,29 @@ def printMenu():
    print("=9) Exit                                      ")
    print("==============================================")
 
+# Checks for the existence of a preferences file
+# If no file exists, initializePreferences is called to create a base preferences file.
+def checkPreferences():
+   if os.path.isfile(".hueCandlePrefs"):
+      print("Preferences file found!")
+   else:
+      print("No preference file found! Initializing...")
+      initializePreferences()
+
+   global selectedLights
+   with open(".hueCandlePrefs", "rb") as fileHandle:
+      preferencesDictionary = pickle.load(fileHandle)
+      selectedLights = preferencesDictionary["selectedBulbs"]
+
+# Creates and saves a preferences dictionary to the file .hueCandlePrefs
+# For now, only a list of selected bulbs is stored.  The list is initialized as a list with one element (bulb #1)      
+def initializePreferences():
+   preferencesDictionary = {"selectedBulbs" : [1]}
+   pickle.dump(preferencesDictionary, open(".hueCandlePrefs", "wb")) 
+
 def main():
+   checkPreferences()
+
    userInput = 0
    global verbose
 
